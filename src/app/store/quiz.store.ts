@@ -10,4 +10,8 @@ export const QuizStore = signalStore(
     // se il numero delle risposte date è uguale al numero delle domande allora ho finito il quiz
     isDone: computed(() => p.answers().length === p.questions().length),
   })),
+  withComputed((p) => ({
+    // 1° metodo x ritornare la domanda corrente ma ... migliorabile
+    currentQuestion: computed(() => p.questions()[p.currentQuestionIndex()]),
+  })),
 );
