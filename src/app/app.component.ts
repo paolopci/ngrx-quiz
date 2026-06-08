@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { SharedModule } from './shared.module';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { ProgressComponent } from './components/progress/progress.component';
@@ -15,5 +15,5 @@ import { QUESTIONS } from './data/questions';
 })
 export class AppComponent {
   title = 'ngrx-quiz';
-  questions = QUESTIONS;
+  questions = signal(QUESTIONS);
 }
