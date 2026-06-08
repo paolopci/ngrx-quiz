@@ -11,7 +11,7 @@ import { QuizStore } from './store/quiz.store';
   imports: [SharedModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  providers: [QuizStore],
+  //  providers: [QuizStore],
 })
 export class AppComponent {
   title = 'ngrx-quiz';
