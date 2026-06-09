@@ -1,12 +1,14 @@
 import {
+  getState,
   patchState,
   signalStore,
   withComputed,
+  withHooks,
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { initialQuizSlice } from './quiz.slice';
-import { computed } from '@angular/core';
+import { initialQuizSlice, QuizSlice } from './quiz.slice';
+import { computed, effect } from '@angular/core';
 import { addAnswer, resetQuiz } from './quiz.updaters';
 
 export const QuizStore = signalStore(
@@ -32,15 +34,34 @@ export const QuizStore = signalStore(
       questionsCount,
     };
   }),
-
-  // withComputed((p) => ({
-  //   1° metodo x ritornare la domanda corrente ma ... migliorabile
-  //   currentQuestion: computed(() => p.questions()[p.currentQuestionIndex()]),
-  // })),
-
   // Espone i metodi dello store: qui viene registrata la risposta selezionata.
   withMethods((store) => ({
     addAnswer: (index: number) => patchState(store, addAnswer(index)),
     reset: () => patchState(store, resetQuiz()),
+  })),
+  withHooks((store) => ({
+    // Hook eseguito all'inizializzazione dello store.
+    onInit: () => {
+      // Recupera dal localStorage lo stato del quiz salvato in precedenza.
+      const stateJson = localStorage.getItem('quiz');
+
+      // Se esiste uno stato salvato, lo deserializza e lo applica allo store.
+      if (stateJson) {
+        const state = JSON.parse(stateJson) as QuizSlice;
+        patchState(store, state);
+      }
+
+      // Effetto che osserva lo stato dello store e lo salva nel localStorage.
+      effect(() => {
+        // Legge lo stato corrente dello store.
+        const state = getState(store);
+
+        // Converte lo stato in formato JSON.
+        const stateJson = JSON.stringify(state);
+
+        // Persiste lo stato del quiz nel localStorage.
+        localStorage.setItem('quiz', stateJson);
+      });
+    },
   })),
 );
