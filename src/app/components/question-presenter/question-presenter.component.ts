@@ -29,9 +29,6 @@ export class QuestionPresenterComponent {
   onSelect(index: number) {
     console.log('Selecte answer: ', index);
 
-    patchState(this.store,state=>({
-      answers: [...state.answers,index]
-    
-    }))
+    this.store.addAnswer(index);
   }
 }

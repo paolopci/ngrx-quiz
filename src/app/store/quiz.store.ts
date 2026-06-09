@@ -1,4 +1,10 @@
-import { signalStore, withComputed, withState } from '@ngrx/signals';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 import { initialQuizSlice } from './quiz.slice';
 import { computed } from '@angular/core';
 
@@ -30,4 +36,13 @@ export const QuizStore = signalStore(
   //   1° metodo x ritornare la domanda corrente ma ... migliorabile
   //   currentQuestion: computed(() => p.questions()[p.currentQuestionIndex()]),
   // })),
+
+  // Espone i metodi dello store: qui viene registrata la risposta selezionata.
+  withMethods((store) => ({
+    addAnswer: (index: number) => {
+      patchState(store, (state) => ({
+        answers: [...state.answers, index],
+      }));
+    },
+  })),
 );
