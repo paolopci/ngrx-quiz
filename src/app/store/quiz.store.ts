@@ -17,10 +17,12 @@ export const QuizStore = signalStore(
     const currentQuestion = computed(
       () => p.questions()[currentQuestionIndex()],
     );
+    const questionsCount = computed(() => p.questions().length);
     return {
       currentQuestionIndex,
       isDone,
       currentQuestion,
+      questionsCount,
     };
   }),
 
