@@ -14,15 +14,14 @@ import { addAnswer, resetQuiz } from './quiz.updaters';
 export const QuizStore = signalStore(
   {
     providedIn: 'root',
-    //protectedState: false, // questo ti permette di modificare lo stato direttamente It looks like you're working with Angular's signal
+    // protectedState: false permette la modifica diretta dello stato, ma qui lo stato resta protetto.
   },
   withState(initialQuizSlice),
   withComputed((p) => {
-    const currentQuestionIndex = computed(() => p.answers().length); // conta il numero delle risposte che ho già dato
-    // se il numero delle risposte date è uguale al numero delle domande allora ho finito il quiz
+    const currentQuestionIndex = computed(() => p.answers().length); // Indice della domanda corrente, basato sul numero di risposte date.
+    // Il quiz è terminato quando il numero di risposte date coincide con il numero totale di domande.
     const isDone = computed(() => p.answers().length === p.questions().length);
-    // per currentQuestion occorre che currentQuestionIndex sia già stato calcolato
-    // quindi importante è l'ordine
+    // Usa l'indice corrente per recuperare la domanda da mostrare.
     const currentQuestion = computed(
       () => p.questions()[currentQuestionIndex()],
     );
@@ -34,7 +33,7 @@ export const QuizStore = signalStore(
       questionsCount,
     };
   }),
-  // Espone i metodi dello store: qui viene registrata la risposta selezionata.
+  // Espone i metodi dello store per registrare una risposta o reimpostare il quiz.
   withMethods((store) => ({
     addAnswer: (index: number) => patchState(store, addAnswer(index)),
     reset: () => patchState(store, resetQuiz()),
