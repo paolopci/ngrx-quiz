@@ -9,7 +9,7 @@ import { QuestionPresenterComponent } from "./components/question-presenter/ques
 
 @Component({
   selector: 'app-root',
-  imports: [SharedModule, ToolbarComponent, QuestionPresenterComponent],
+  imports: [SharedModule, ToolbarComponent, QuestionPresenterComponent, ProgressComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   //  providers: [QuizStore],
