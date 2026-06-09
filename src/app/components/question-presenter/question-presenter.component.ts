@@ -26,9 +26,9 @@ export class QuestionPresenterComponent {
   // Per questo non usi () in TypeScript.
   readonly question = this.store.currentQuestion;
 
-  onSelect(index: number) {
-    console.log('Selecte answer: ', index);
-
-    this.store.addAnswer(index);
-  }
+  // onSelect(index: number) {
+  //   console.log('Selecte answer: ', index);
+  //   addAnswer(index) è definita in quiz.updates.ts è un riduttore
+  //   this.store.addAnswer(index);
+  // }
 }
