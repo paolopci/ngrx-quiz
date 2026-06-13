@@ -1,4 +1,18 @@
-@if (icon()) {
-    <mat-icon>{{icon()}}</mat-icon>
+@if (titleLink()) {
+    <a class="title" [routerLink]="titleLink()" (click)="titleClicked.emit()">
+        @if (icon()) {
+            <mat-icon>{{icon()}}</mat-icon>
+        }
+        <span>{{caption()}}</span>
+    </a>
+} @else {
+    <span class="title" (click)="titleClicked.emit()">
+        @if (icon()) {
+            <mat-icon>{{icon()}}</mat-icon>
+        }
+        <span>{{caption()}}</span>
+    </span>
 }
-{{caption()}}
+
+<span class="spacer"></span>
+<ng-content />

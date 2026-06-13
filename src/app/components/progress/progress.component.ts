@@ -11,5 +11,9 @@ export class ProgressComponent {
   readonly value = input.required<number>();
   readonly max = input.required<number>();
 
-  readonly ratio = computed(() => this.value() / this.max());
+  readonly displayValue = computed(() =>
+    this.max() === 0 ? 0 : Math.min(this.value() + 1, this.max()),
+  );
+
+  readonly ratio = computed(() => this.displayValue() / this.max());
 }

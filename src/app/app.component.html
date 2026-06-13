@@ -1,11 +1,1 @@
-<app-toolbar caption="Colors Quiz" icon="palette">
-  <button mat-icon-button matTooltip="Reset Quiz">
-    <mat-icon>restart_alt</mat-icon>
-  </button>
-</app-toolbar>
-<div class="main">
-    <app-progress [value]="store.currentQuestionIndex()" [max]="store.questionsCount()" />
-    <app-question-presenter />
-</div>
-
-
+<router-outlet />

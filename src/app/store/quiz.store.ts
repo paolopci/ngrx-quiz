@@ -12,10 +12,6 @@ import { computed, effect } from '@angular/core';
 import { addAnswer, resetQuiz } from './quiz.updaters';
 
 export const QuizStore = signalStore(
-  {
-    providedIn: 'root',
-    // protectedState: false permette la modifica diretta dello stato, ma qui lo stato resta protetto.
-  },
   withState(initialQuizSlice),
   withComputed((p) => {
     const currentQuestionIndex = computed(() => p.answers().length); // Indice della domanda corrente, basato sul numero di risposte date.
@@ -26,11 +22,20 @@ export const QuizStore = signalStore(
       () => p.questions()[currentQuestionIndex()],
     );
     const questionsCount = computed(() => p.questions().length);
+    const correctCount = computed(
+      () =>
+        p
+          .answers()
+          .filter(
+            (answer, index) => answer === p.questions()[index]?.correctIndex,
+          ).length,
+    );
     return {
       currentQuestionIndex,
       isDone,
       currentQuestion,
       questionsCount,
+      correctCount,
     };
   }),
   // Espone i metodi dello store per registrare una risposta o reimpostare il quiz.
@@ -44,10 +49,15 @@ export const QuizStore = signalStore(
       // Recupera dal localStorage lo stato del quiz salvato in precedenza.
       const stateJson = localStorage.getItem('quiz');
 
-      // Se esiste uno stato salvato, lo deserializza e lo applica allo store.
+      // Se esiste uno stato salvato, ripristina solo un quiz ancora in corso.
       if (stateJson) {
-        const state = JSON.parse(stateJson) as QuizSlice;
-        patchState(store, state);
+        const state = JSON.parse(stateJson) as Partial<QuizSlice>;
+        const answers = Array.isArray(state.answers) ? state.answers : [];
+        const questionsCount = initialQuizSlice.questions.length;
+
+        if (answers.length > 0 && answers.length < questionsCount) {
+          patchState(store, { answers });
+        }
       }
 
       // Effetto che osserva lo stato dello store e lo salva nel localStorage.
